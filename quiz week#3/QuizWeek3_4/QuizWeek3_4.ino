@@ -6,20 +6,16 @@
 
 Ultrasonic ultrasonic(trigPin, echoPin); //Creates ultrasonic object
 int distance; //Creates variable for distance
-
-bool modeState = true; 
+bool modeState = true;
 // setting PWM properties
 const int freq = 5000;
 const int ledChannel = 0;
 const int resolution = 8;
 
-
-
 void setup() {
   Serial.begin(9600);// Serial Communication is starting with 9600 of baudrate speed
   pinMode(pbPin, INPUT_PULLUP);//Sets the pbPin as an INPUT
   pinMode(ledPin, OUTPUT);//Sets the ledPin as an OUTPUT
- 
   ledcSetup(ledChannel, freq, resolution);// configure LED PWM functionalitites
   ledcAttachPin(ledPin, ledChannel); // attach the channel to the GPIO to be controlled
 }
@@ -31,10 +27,8 @@ void loop() {
     while (!digitalRead(pbPin));//Check the signal of pushButton1
   }
   distance = ultrasonic.read();// Read distance from the ultrasonic sensor
-
   Serial.print("Distance in CM: ");
   Serial.println(distance);
-
   if (modeState) {//Check modeState
     int dutyCycle = 0; //Creates variable for dutyCycle
     if (distance >= 3 && distance <= 10) { //Check distance between 3 and 10 cm
@@ -43,7 +37,6 @@ void loop() {
     Serial.print("dutyCycle: ");
     Serial.println(dutyCycle);
     ledcWrite(ledChannel, dutyCycle);
-
   } else {
     int delayTime = 0;//Creates variable for delayTime
     if (distance >= 3 && distance <= 10) {//Check distance between 3 and 10 cm
@@ -56,8 +49,5 @@ void loop() {
     ledcWrite(ledChannel, 0);
     delay(delayTime );
   }
-
   delay(500);
-
-
 }
